@@ -1,1 +1,1 @@
-# techical-assign-server
+# technical-assign-server
