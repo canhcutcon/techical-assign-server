@@ -4,20 +4,19 @@ const { decodeToken } = require("../helpers/jwt");
 
 const verifyJwtTokenAdmin = async function (req, res) {
   try {
-    const tokens = req.headers.authorization.split(" ");
-    const verifiedJwt = decodeToken(tokens[1]);
-    // check existed user
-    if (verifiedJwt?.username) {
-      const admin = await UserAdmin.findOne({ username: verifiedJwt.username }).select("accessToken");
-      if (tokens[1] !== admin?.accessToken) {
-        return Boom.unauthorized("Invalid Token");
-      }
+    let token = null;
+    if (req.headers.authorization) {
+      token = req.headers.authorization.split(" ")[1];
     }
-    if (verifiedJwt?.scope && verifiedJwt?.scope === "admin") {
-      return true;
-    }
-    return Boom.unauthorized("Invalid Token");
+    const verifiedJwt = decodeToken(token);
+    const username = verifiedJwt.username.toLowerCase();
+
+    const isMember = await UserAdmin.findOne({ username });
+    if (!isMember) return Boom.unauthorized("username is not member");
+
+    return { username: username, _id: verifiedJwt._id };
   } catch (e) {
+    console.error(e);
     return Boom.unauthorized("Invalid Token");
   }
 };

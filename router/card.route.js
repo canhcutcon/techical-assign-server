@@ -25,14 +25,8 @@ CardRouter.createCard = AdminAuthRequest({
         )
         .required()
         .description("Card attributes"),
-      rarity: Joi.string()
-        .required()
-        .description("Card rarity")
-        .validate(...Object.values(RATE_CARD)),
-      category: Joi.string()
-        .required()
-        .description("Card category")
-        .validate(...Object.values(CARD_CATEGORY)),
+      rarity: Joi.string().required().description("Card rarity"),
+      category: Joi.string().required().description("Card category"),
     }),
   },
   handler: Handler.createCard,
@@ -61,12 +55,8 @@ CardRouter.updateCard = AdminAuthRequest({
         )
         .description("Card attributes")
         .optional(),
-      rarity: Joi.string()
-        .description("Card rarity")
-        .valid(...Object.values(RATE_CARD)),
-      category: Joi.string()
-        .description("Card category")
-        .valid(...Object.values(CARD_CATEGORY)),
+      rarity: Joi.string().description("Card rarity"),
+      category: Joi.string().description("Card category"),
     }),
   },
   handler: Handler.updateCard,
@@ -102,18 +92,15 @@ CardRouter.getCards = AdminAuthRequest({
       limit: Joi.number().default(10).description("Limit"),
       page: Joi.number().default(1).description("Page"),
       name: Joi.string().description("Card name"),
-      category: Joi.string()
-        .description("Card category")
-        .validate(...Object.values(CARD_CATEGORY)),
-      rarity: Joi.string()
-        .description("Card rarity")
-        .validate(...Object.values(RATE_CARD)),
+      category: Joi.string().description("Card category"),
+      rarity: Joi.string().description("Card rarity"),
       status: Joi.string().description("Card status").default("show"),
       sort: Joi.string().default("createdAt").description("Sort"),
       order: Joi.string().default("desc").description("Order"),
+      key: Joi.string().description("Key search").optional().allow(""),
     }),
   },
-  handler: Handler.getCards,
+  handler: Handler.getAllCard,
 });
 
 module.exports = CardRouter;

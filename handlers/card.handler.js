@@ -5,13 +5,21 @@ const { genCardId } = require("../libs/common");
 const { getPagination } = require("../helpers/api-request");
 
 _this.getAllCard = async (req) => {
-  const { name, category, rarity, status, sort, order } = req.query;
+  const { name, category, rarity, status, sort, order, key } = req.query;
   const conditions = {
     ...(name && { name: { $regex: name, $options: "i" } }),
     ...(category && { category }),
     ...(rarity && { rarity }),
     ...(status && { status }),
   };
+
+  if (key) {
+    conditions.$or = [
+      { name: { $regex: key, $options: "i" } },
+      { cardId: { $regex: key, $options: "i" } },
+      { description: { $regex: key, $options: "i" } },
+    ];
+  }
 
   const data = await cardService.getAllCard(
     conditions,
@@ -24,21 +32,22 @@ _this.getAllCard = async (req) => {
 };
 
 _this.createCard = async (req) => {
-  const { payload } = req.body;
-  const cardId = genCardId(payload.name);
-  const card = await cardService.createCard({ cardId, ...payload });
+  const cardId = genCardId(req.payload?.name);
+  const card = await cardService.createCard({
+    cardId,
+    ...req.payload,
+  });
   return ApiResponse.success(card);
 };
 
 _this.updateCard = async (req) => {
-  const { condition, payload } = req.body;
-  const card = await cardService.updateCard(condition, payload);
+  const card = await cardService.updateCard(condition, req.payload);
   return ApiResponse.success(card);
 };
 
 _this.deleteCard = async (req) => {
-  const { condition } = req.body;
-  const card = await cardService.deleteCard(condition);
+  const { cardId } = req.params;
+  const card = await cardService.deleteCard({ cardId });
   return ApiResponse.success(card);
 };
 

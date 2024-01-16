@@ -1,6 +1,4 @@
 "use strict";
-
-const { ref } = require("joi");
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
@@ -29,9 +27,9 @@ const schema = new Schema(
       ],
       default: [],
     },
-    rarity: { type: String, default: null },
-    category: { type: String, default: null, ref: "category" },
-    type: { type: String, default: null, required: false },
+    rarity: { type: String, default: "" },
+    category: { type: String, default: "" },
+    type: { type: String, default: "", required: false },
     status: { type: String, default: "show" },
   },
   { timestamps: true }
