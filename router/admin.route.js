@@ -15,7 +15,7 @@ AdminRouter.login = {
   handler: Handler.login,
 };
 
-AdminRouter.addMember = AdminAuthRequest({
+AdminRouter.addMember = {
   tags: ["Admin"],
   description: "Admin add member",
   validate: {
@@ -25,7 +25,7 @@ AdminRouter.addMember = AdminAuthRequest({
     }),
   },
   handler: Handler.addMember,
-});
+};
 
 // AdminRouter.updateMember = AdminAuthRequest({
 //   tags: ["Admin"],

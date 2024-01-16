@@ -1,19 +1,23 @@
-const { ApiResponse: Response } = require("../helpers");
+const { ApiResponse: Response, ApiResponse } = require("../helpers");
 const { AdminService } = require("../services");
 const { getPagination } = require("../helpers/api-request");
+const { pagination } = require("../libs/joi");
 const handler = {};
 
 handler.login = async (req) => {
-  return AdminService.login(req.payload.username, req.payload.password);
+  return ApiResponse.success(await AdminService.loginAdmin(req.payload));
 };
 
 handler.addMember = async (req) => {
   const { username, password } = req.payload;
-  return AdminService.registerAdmin({ username, password });
+  const data = await AdminService.registerAdmin({ username, password });
+  return ApiResponse.success(data);
 };
 
 handler.updateMember = async (req) => {
-  return AdminService.updateMember(req.params.id, req.payload);
+  return ApiResponse.success(
+    await AdminService.updateAdmin(req.params, req.payload)
+  );
 };
 
 handler.getListUsers = async (req) => {
@@ -29,7 +33,13 @@ handler.getListUsers = async (req) => {
     page,
     limit,
   });
-  return Response.Paginate(data, total, page, limit);
+
+  return Response.success({
+    items: data,
+    page,
+    limit,
+    total,
+  });
 };
 
 module.exports = handler;

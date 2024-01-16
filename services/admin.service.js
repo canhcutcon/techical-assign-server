@@ -1,8 +1,9 @@
-const { compareSync } = require("bcrypt");
+const { compareSync, hash } = require("bcrypt");
 const { UserAdmin } = require("../database/models");
 const Exception = require("../helpers/exception");
 const config = require("config");
 const jwt = require("jsonwebtoken");
+const { decodeToken, createToken } = require("../helpers/jwt");
 const _this = {};
 
 _this.loginAdmin = async ({ username, password }) => {
@@ -16,45 +17,16 @@ _this.loginAdmin = async ({ username, password }) => {
   if (!compareSync(password, admin.password)) {
     throw Exception.BadRequest("Invalid password");
   }
-  if (admin.accessToken) {
-    // check access token expired
-    const decodedToken = jwt.verify(
-      admin.accessToken,
-      config.jwt.secret,
-      function (err, decoded) {
-        if (err) {
-          return null;
-        }
-        return decoded;
-      }
-    );
-    if (decodedToken === null) {
-      admin.accessToken = "";
-    }
-  }
-  const token = admin.accessToken
-    ? admin.accessToken
-    : jwt.sign(
-        {
-          _id: admin._id,
-          username: admin.username,
-        },
-        config.jwt.secret,
-        {
-          algorithm: "HS256",
-          expiresIn: config.jwt.expiredIn,
-        }
-      );
+  const token = admin.accessToken ? admin.accessToken : createToken(admin);
   delete admin.password;
-  delete admin.accessToken;
-  if (!admin.isPartner) {
-    await UserAdmin.updateOne(
-      {
-        username: username.toLowerCase(),
-      },
-      { accessToken: token }
-    ).exec();
-  }
+  await UserAdmin.updateOne(
+    { username },
+    {
+      accessToken: token,
+      failedLoginAttempts: 0,
+      $unset: { unlockTime: 1 },
+    }
+  );
   return { ...admin, token };
 };
 
@@ -79,8 +51,10 @@ _this.getAdmins = async (conditions, pagination, projection = {}) => {
 };
 
 _this.registerAdmin = async (payload) => {
+  const { username, password } = payload;
   return UserAdmin.create({
-    ...payload,
+    username,
+    password: await hash(password, 10),
   });
 };
 

@@ -1,19 +1,26 @@
 const { Card } = require("../database/models/index");
 const _this = {};
-
 _this.findOne = async (condition = {}, projection = {}, populate = []) => {
   return Card.findOne(condition, projection).populate(populate).lean();
 };
 
-_this.getAllCard = async (conditions, pagination, projection = {}) => {
+_this.getAllCard = async (
+  conditions,
+  pagination,
+  projection = {},
+  sort = {}
+) => {
   const { limit, page, skip } = pagination;
   projection = {
     ...projection,
     ...{ _id: 0, createdAt: 0, updatedAt: 0, __v: 0 },
   };
 
+  if (sort) {
+    sort = { ...sort, ...{ createdAt: -1 } };
+  }
   const [items, total] = await Promise.all([
-    Card.find(conditions, projection).skip(skip).limit(limit).lean(),
+    Card.find(conditions, projection).skip(skip).limit(limit).sort(sort).lean(),
     Card.countDocuments(conditions),
   ]);
 

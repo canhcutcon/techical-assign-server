@@ -10,8 +10,9 @@ const schema = new Schema(
     name: { type: String, required: true },
     image: { type: String, required: true },
     description: { type: String },
-    isActive: { type: Boolean, default: false },
-    quality: { type: Date, default: new Date() },
+    isActive: { type: Boolean, default: true },
+    quantity: { type: Date, default: new Date() },
+    price: { type: Number, default: 0 },
     attributes: {
       type: [
         {
@@ -35,6 +36,7 @@ const schema = new Schema(
   },
   { timestamps: true }
 );
+
 schema.index({ cardId: 1, name: 1 }, { unique: true });
 
 module.exports = mongoose.model("card", schema);

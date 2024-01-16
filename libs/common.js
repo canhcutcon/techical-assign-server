@@ -15,17 +15,6 @@ _this.hashPassword = (password) => {
   });
 };
 
-_this.getIp = (req) => {
-  if (req.headers["x-forwarded-for"]) {
-    return req.headers["x-forwarded-for"].split(",")[0];
-  }
-  return null;
-};
-
-_this.getCurrent = () => {
-  return Math.round(Date.now() / 1000);
-};
-
 _this.generateCode = (length = 20) => {
   let text = "";
   const possible =
@@ -37,10 +26,10 @@ _this.generateCode = (length = 20) => {
   return text;
 };
 
-_this.getStoreSlug = (name, nftId) => {
+_this.genCardId = (name) => {
   return `${name?.replace(/\s/g, "-").replace(/\//g, "-")}-${_this.generateCode(
     4
-  )}-${nftId}`;
+  )}-${new Date().getTime()}`;
 };
 
 _this.getMongooseRegexSearch = (key) =>
