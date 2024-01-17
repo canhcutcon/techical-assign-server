@@ -16,6 +16,7 @@ const AuthRouter = require("./auth.route");
 const UserRouter = require("./user.route");
 const AdminRouter = require("./admin.route");
 const CardRouter = require("./card.route");
+const FileRouter = require("./file.route");
 
 router.group("/authentication", [
   POST("/login", AuthRouter.login),
@@ -43,6 +44,8 @@ router.group("/cards", [
   DELETE("/{cardId}", CardRouter.deleteCard),
   GET("/{cardId}", CardRouter.getCard),
 ]);
+
+router.group("/upload", [POST("/file", FileRouter.postFileUpload)]);
 
 router.applyRouteHoF(setSwaggerTagAndExceptionCapture);
 

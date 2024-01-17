@@ -43,7 +43,11 @@
     "multiparty": "^4.2.3",
     "node-cache": "^5.1.2",
     "request": "^2.88.2",
-    "request-promise": "^4.2.6"
+    "request-promise": "^4.2.6",
+    "file-type": "^15.0.1",
+    "multer": "^1.4.5-lts.1",
+    "image-size": "^1.0.2",
+    "aws-sdk": "^2.1428.0"
   },
   "devDependencies": {
     "@babel/core": "^7.18.2",

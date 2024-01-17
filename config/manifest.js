@@ -3,7 +3,7 @@ const config = require("config");
 const Boom = require("boom");
 
 const Environment = config.get("env");
-const Port = 3000;
+const Port = 3011;
 
 const manifest = {
   server: {
