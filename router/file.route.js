@@ -1,3 +1,4 @@
+const Joi = require("joi");
 const handler = require("../handlers/file.handle");
 
 const FileRouter = {};

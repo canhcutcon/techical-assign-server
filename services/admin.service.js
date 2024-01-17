@@ -23,11 +23,9 @@ _this.loginAdmin = async ({ username, password }) => {
     { username },
     {
       accessToken: token,
-      failedLoginAttempts: 0,
-      $unset: { unlockTime: 1 },
     }
   );
-  return { ...admin, token };
+  return { ...admin };
 };
 
 _this.getAdmins = async (conditions, pagination, projection = {}) => {

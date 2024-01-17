@@ -20,7 +20,7 @@ CardRouter.createCard = AdminAuthRequest({
           Joi.object({
             trait_type: Joi.string().required(),
             value: Joi.string().required(),
-            display_type: Joi.string().required(),
+            display_type: Joi.string().default("string").allow(""),
           })
         )
         .required()
@@ -50,7 +50,7 @@ CardRouter.updateCard = AdminAuthRequest({
           Joi.object({
             trait_type: Joi.string().required(),
             value: Joi.string().required(),
-            display_type: Joi.string().required(),
+            display_type: Joi.string().default("string").allow(""),
           })
         )
         .description("Card attributes")
@@ -91,10 +91,8 @@ CardRouter.getCards = AdminAuthRequest({
     query: Joi.object({
       limit: Joi.number().default(10).description("Limit"),
       page: Joi.number().default(1).description("Page"),
-      name: Joi.string().description("Card name"),
-      category: Joi.string().description("Card category"),
-      rarity: Joi.string().description("Card rarity"),
-      status: Joi.string().description("Card status").default("show"),
+      category: Joi.string().description("Card category").allow(""),
+      rarity: Joi.string().description("Card rarity").allow(""),
       sort: Joi.string().default("createdAt").description("Sort"),
       order: Joi.string().default("desc").description("Order"),
       key: Joi.string().description("Key search").optional().allow(""),

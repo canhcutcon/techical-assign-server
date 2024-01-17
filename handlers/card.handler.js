@@ -41,7 +41,10 @@ _this.createCard = async (req) => {
 };
 
 _this.updateCard = async (req) => {
-  const card = await cardService.updateCard(condition, req.payload);
+  const card = await cardService.updateCard(
+    { cardId: req?.params?.cardId },
+    req.payload
+  );
   return ApiResponse.success(card);
 };
 

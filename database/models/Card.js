@@ -9,7 +9,7 @@ const schema = new Schema(
     image: { type: String, required: true },
     description: { type: String },
     isActive: { type: Boolean, default: true },
-    quantity: { type: Date, default: new Date() },
+    quantity: { type: Number, default: 0 },
     price: { type: Number, default: 0 },
     attributes: {
       type: [

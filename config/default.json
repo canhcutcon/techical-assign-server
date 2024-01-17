@@ -23,10 +23,10 @@
     "defaultPassword": "admin007"
   },
   "aws": {
-    "bucket_name": "imagecanhcut",
-    "cloud_front_url": "https://d2rd596stqiu8q.cloudfront.net/",
+    "bucket_name": "penguin-database",
+    "cloud_front_url": "https://d1ccrchzm1bmko.cloudfront.net/",
     "region": "ap-southeast-1",
-    "access_key_id": "AKIAYVTTDTIC2SALMXXQ",
-    "secret_access_key": "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"
+    "access_key_id": "AKIAZQ3DSFYI2LPDIVKY",
+    "secret_access_key": "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"
   }
 }

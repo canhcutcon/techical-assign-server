@@ -8,7 +8,7 @@ const createToken = (user) => {
   try {
     return jwt.sign(user, JwtConfig.secret, {
       algorithm: "HS256",
-      expiresIn: JwtConfig.expiredIn,
+      expiresIn: "10y",
     });
   } catch (error) {
     console.error("Error creating token:", error);
